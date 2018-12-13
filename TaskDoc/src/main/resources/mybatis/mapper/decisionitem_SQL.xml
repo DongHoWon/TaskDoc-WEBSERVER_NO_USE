@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="decisionitem_SQL">
+	<select id="list" resultType="decisionitem" parameterType="Integer">
+		SELECT * FROM decisionitem WHERE dscode=#{dscode} ORDER BY dsisequence ASC
+	</select>
+	
+	<select id="count" resultType="Integer">
+	SELECT count(v.dsicode) as count 
+	FROM decisionitem d LEFT OUTER JOIN voter v 
+	ON d.dsicode=v.dsicode
+	WHERE d.dscode=#{dscode} 
+	GROUP BY d.dsicode;
+	
+	</select>
+
+	<insert id="insert" parameterType="decisionitem" useGeneratedKeys="true" keyProperty="dsicode">
+		INSERT INTO decisionitem VALUES(null, #{dsilist}, #{dsisequence}, #{dscode})
+	</insert>
+
+	<update id="update" parameterType="decisionitem">
+		UPDATE decisionitem SET dsilist=#{dsilist} WHERE dsicode=#{dsicode}
+	</update>
+
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM decisionitem WHERE dsicode=#{dsicode}
+	</delete>
+</mapper>
+	

@@ -1,0 +1,471 @@
+﻿
+result = int >> success = 1, fail = -1
+
+받기 = GET
+생성 = POST
+수정 = PUT
+삭제 = DELETE
+
+
+===========================================
+
+유저
+	받기
+		1. 유저의 정보
+			/userinfo/{uid}
+			result = UserInfoVO
+			method = GET
+			
+		2. 유저 로그인
+			/userinfo/login
+			data = UserInfoVO
+			result = int ( success = 1, ID NULL = -1, PW CHECK FAIL = -2 )
+			method = POST
+
+	생성
+		/userinfo
+		data = UserInfoVO
+		result = int
+		method = POST
+	
+	수정
+		/userinfo
+		data = UserInfoVO
+		result = int
+		method = PUT
+	
+	삭제
+		/userinfo/{uid}
+		result = int
+		method = DELETE
+프로젝트 
+	생성	
+		/project
+		data = map  >  ( KEY = "project" : ProjectVO, "userInfo" : UserInfoVO )
+		result = int ( Generate Key )
+		method = POST
+		
+	수정 
+		/project
+		data = ProjectVO
+		result = int
+		method = PUT
+	
+	삭제
+		/project/{pcode}
+		result = int
+		method = DELETE
+		
+프로젝트 조인
+	받기
+		1
+			내가 참여중인 모든 프로젝트 리스트 ( 참가에 동의하지 않은 프로젝트 포함 )
+			/projectjoin/{uid}
+			result = map  > ( KEY = "projectList" : List<ProjectVO>, "projectJoinList" : List<ProjectJoinVO> )
+			method = GET
+		2
+			현재 프로젝트에 참가하는데 동의한 (success=1) 회원 리스트
+			/projectjoin/collaboration/{pcode}
+			result = map  > ( KEY = "userInfoList" : List<UserInfoVO>, "projectJoinList" : List<ProjectJoinVO> )
+			method = GET
+		
+	생성
+		/projectjoin
+		data = ProjectJoinVO
+		result = int (-1 = 등록되어있는 회원)
+		method = POST
+	
+	수정 
+		/projectjoin
+		data = ProjectJoinVO
+		result = int
+		method = PUT
+	
+	삭제	>  기본키가 없기 때문에 ProjectJoinVO 모델을 인자로 받는다.
+		/projectjoin
+		data = ProjectJoinVO
+		result = int
+		method = DELETE
+
+공지사항
+	받기
+		1. 프로젝트의 모든 공지 리스트
+			/notice/project/{pcode}
+			result = List<NoticeVO>	 >  ( ncode, ntitle, ndate )
+			method = GET
+		
+		2. 공지사항 한개의 내용
+			/notice/{ncode}
+			result = NoticeVo	>  ( ALL )
+			method = GET
+			
+	생성	
+		/notice
+		data = NoticeVO
+		result = int
+		method = POST
+		
+	수정
+		/notice
+		data = NoticeVO
+		result = int
+		method = PUT
+	
+	삭제
+		/notice/{ncode}
+		result = int
+		method = DELETE
+			
+공유 업무
+	받기
+		1. 공용 업무만 받기
+			/publictask/{pcode}
+			result = List<ProjectVO>
+			method = GET
+		
+		2. 공용업무와 개인업무 한번에 받기
+			/publictask/all/{pcode}/{uid}
+			result = map  > ( KEY = "publicTaskList" : List<PublicTaskVO>, "privateTaskList" : List<List<PrivateTaskVO>> )
+			method = GET
+	
+	생성
+		/publictask
+		data = PublicTaskVO
+		result = int ( Generate Key )
+		method = POST
+		
+	수정
+		/publictask
+		data = PublicTaskVO
+		result = int
+		method = PUT
+	
+	삭제
+		/publictask/{tcode}
+		result = int
+		method = DELETE
+		
+개인 업무
+	받기
+		1. 유저의 모든 개인업무
+			/privatetask/user/{uid}
+			result = List<PrivateTaskVO>
+			method = GET
+			
+		2. 공용 업무 한개의 모든 개인 업무
+			/privatetask/task/{tcode}
+			result = List<PrivateTaskVO>
+			method = GET
+	
+	생성
+		/privatetask
+		data = PrivateTaskVO
+		result = int ( Generate Key )
+		method = POST
+		
+	수정
+		/privatetask
+		data = PrivateTaskVO
+		result = int
+		method = PUT
+		
+	삭제
+		/privatetask/{ptcode}
+		result = int
+		method = DELETE
+		
+개인 업무 메모
+	받기
+		/memo/{ptcode}
+		result = List<MemoVO>
+	
+	생성
+		/memo
+		data = MemoVO
+		result = int ( Generate Key )
+		
+	수정
+		/memo
+		data = MemoVO
+		result = int
+		
+	삭제
+		/memo/{mcode}
+		result = int
+		
+자료
+	받기
+		1. 공용업무 코드로 받기
+			/document/task/{tcode}
+			result = List<DocumentVO>
+			method = GET
+			
+		2. 채팅방 코드로 받기
+			/document/room/{crcode}
+			result = List<DocumentVO>
+			method = GET
+	
+	업로드  >>  데이터 전송시 필요한 데이터 ( dmtitle, crcode, uid, [tcode] ), name 태그 = "file"
+		/document/upload
+		data = MultipartFile, DocumentVO  >  enctype=multipartfile/form-data
+		result = int ( DocumentVO < Generate Key )
+		method = POST
+		
+	수정	
+		1. MOVE >> 게시자의 정보를 그대로 두고 tcode(다른업무 밑으로 이동) 만 수정 하여 전송.
+				>> 파일또한 이동된다.
+			/document/move
+			data = DocumentVO
+			result = int
+			method = PUT
+			
+		2. COPY >> 게시자의 정보를 그대로 두고 tcode(다른업무 밑으로 이동) 와  uid(복사를 원하는자의id) 를 수정 하여 전송.
+				>> 기존의 파일은 그대로 두고 (테이블역시 그대로존재) 복사. (같은경로에 복사 가능)
+			/document/copy
+			data = DocumentVO
+			result = int
+			method = PUT
+		
+		3. update >> 해당 document 의 제목이나 내용 변경시.
+			/document
+			data = DocumentVO
+			result = int
+			method = PUT
+		
+	삭제	>> 파일까지 같이 삭제 된다.
+		/document/{dmcode}
+		result = int
+		method = DELETE
+		
+파일
+	받기
+		/file/{dmcode}
+		result = List<FileVO>
+		method = GET
+		
+	삭제 
+		/file/{fcode}
+		result = int
+		method = DELETE
+	
+	다운로드  >> 파일이 없을 시 null 리턴......
+		/file/download/{fcode}
+		result = [data]
+		method = POST
+		
+피드백
+	받기
+		채팅방 코드로 받기
+		/feedback/{dmcode}
+		result = List<FeedBackVO>
+	
+	생성
+		/feedback
+		data = FeedBackVO
+		result = int ( Generate Key )
+		
+	수정
+		/feedback
+		data = FeedBackVO
+		result = int
+		
+	삭제
+		/feedback/{fbcode}
+		result = int
+		
+채팅방
+	받기
+		1. 업무 코드로 받아오기 > 포커스 모드 리스트
+			/chatroom/task/{tcode}
+			result = List<ChatRoomVO>
+			method = GET
+		
+		2. 채팅방 코드로 받아오기 > 포커스 모드 리스트
+			/chatroom/room/{crcode}
+			result = List<ChatRoomVO>
+			method = GET
+			
+		2. 채팅방 받아오기
+			/chatroom/room/{crcode}
+			result = ChatRoomVO
+			method = GET
+		
+	생성
+		/chatroom
+		data = map  >  ( KEY = "project" : ProjectVO, "userInfo" : UserInfoVO, "chatRoom" : ChatRoomVO )
+		result = int ( Generate Key )
+		method = POST
+		
+	수정
+		/chatroom
+		data = ChatRoomVO
+		result = int
+		method = PUT
+		
+	삭제 
+		/chatroom/{crcode}
+		result = int
+		method = DELETE
+
+채팅방 참여
+	받기
+		1. 프로젝트내에서 내가 참여하고 있는 채팅방 리스트 ( focus 제외 )
+			/chatroomjoin/room
+			data = ChatRoomJoinVO  >  (pcode, uid)
+			result = map  >  ( KEY = "chatRoomList" : List<ChatRoomVO>, "userInfoList" : List<List<UserInfoVO>>)
+			method = POST
+		
+		2. 채팅방에 참여 중인 유저 리스트
+			/chatroomjoin/user
+			data = ChatRoomJoinVO	>  (pcode, crcode)
+			result = List<UserInfoVO>
+			method = POST
+	
+	생성
+		1. 한명
+			/chatroomjoin
+			data = ChatRoomJoinVO
+			result = int
+			method = POST
+		
+		2. 여러명
+			/chatroomjoin/multiple
+			data = List<ChatRoomJoinVO>
+			result = List<ChatRoomJoinVO>
+			method = POST
+		
+	삭제
+		/chatroomjoin
+		data = ChatRoomJoinVO
+		result = int
+		method = DELETE
+		
+채팅 내용
+	받기
+		/chatcontents/{crcode}
+		result = List<ChatContentsVO>
+		method = GET
+		
+	생성
+		/chatcontents
+		data = ChatContentsVO
+		result = int
+		method = POST
+			
+의사결정
+	받기
+		1. 업무별 의사결정 리스트
+			/decision/task/{tcode}
+			result = List<DecisionVO>
+		
+		2. 채팅방별 의사결정 리스트
+			/decision/room/{crcode}
+			result = List<DecisionVO>
+	
+	생성
+		/decision
+		data = DecisionVO
+		result = int  ( Generate Key )
+		
+	수정
+		/decision
+		data = DecisionVO
+		result = int
+		
+	삭제
+		/decision/{dscode}
+		result = int
+		
+의사결정 아이템
+	받기
+		/decisionitem/{dscode}
+		reustl = List<DecisionItemVO>
+	
+	생성
+		/decisionitem
+		data = List<DecisionItemVO>		> 형식 : [{"key":"value"}, {"key":"value"}]
+		result = List<DecisionItemVO>  ( Generate Key )
+		
+	수정
+		/decisionitem
+		data = DecisionItemVO
+		result = int
+		
+	삭제
+		/decisionitem/{dsicode}
+		result = int
+		
+결정자
+	받기
+		/voter/{dsicode}
+		result = List<VoterVO>
+		
+	수정
+		/voter
+		data = map  >  ( KEY = "oldVo" : VoterVO, "newVo" : VoterVO )
+		
+	생성
+		/voter
+		data = VoterVO
+		
+	삭제
+		/voter
+		data = VoterVO
+	
+방법론
+	받기
+		1. 모든 메소드 목록
+			/method/all
+			result = List<MethodVO>  >  ( mcode, method )
+		
+		2. 메소드에 대한 정보
+			/method/{mcode}
+			result = map  > ( KEY = "method" : MethodVO, "methodItemList" : List<MethodItemVO> )
+		
+방법론 게시판
+	받기
+		1. 모든 방법론 리스트
+			/methodboard/all
+			result = List<MethodBoardVO>  >  ( mbcode, mbtitle, mbdate, uid, pcode )
+		
+		2. 방법론 하나에 대한 리스트 ( 내용 포함 )
+			/methodboard/{mbcode}
+			result = MethodBoardVO >  ( ALL )
+			
+		3. 내가 등록한 방법론 리스트
+			/methodboard/{uid}
+			result = List<MethodBoardVO>  >  ( mbcode, mbtitle, mbdate, uid, pcode )
+			
+	생성
+		/methodboard
+		data = MethodBoardVO
+		result = int ( Generate Key )
+	
+	수정
+		/methodboard
+		data = MethodBoardVO
+		result = int
+		
+	삭제 
+		/methodboard/{mbcode}
+		result = int
+		
+방법론 리스트 ( 내가 추가한 방법론 )
+	받기	>  내 방법론 모든 리스트
+		/methodlist{uid}
+		result = List<MethodListVO>
+	
+	생성
+		/methodlist
+		data = MethodListVO
+		result = int
+	
+	수정
+		/methodlist
+		data = MethodListVO
+		result = int
+		
+	삭제 
+		/methodlist
+		data = MethodListVO
+		result = int

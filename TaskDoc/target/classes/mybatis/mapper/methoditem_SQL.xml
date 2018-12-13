@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="methoditem_SQL">
+	<select id="list" parameterType="Integer"  resultType="methoditem">
+		SELECT * FROM methoditem WHERE mcode=#{mcode} ORDER BY misequence ASC
+	</select>
+</mapper>
+	

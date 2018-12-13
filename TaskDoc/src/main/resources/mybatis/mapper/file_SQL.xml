@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="file_SQL">
+
+	<select id="list" resultType="file">
+		SELECT * FROM file WHERE dmcode=#{dmcode} ORDER BY fcode ASC
+	</select>
+	
+	<select id="view" resultType="file">
+		SELECT * FROM file WHERE fcode=#{fcode}
+	</select>
+
+	<insert id="insert" parameterType="file"
+		useGeneratedKeys="true" keyProperty="fcode">
+		INSERT INTO file VALUES(null, #{fname}, #{fstname}, #{fposition}, #{dmcode})
+	</insert>
+
+	<update id="update" parameterType="file">
+		UPDATE file SET fname=#{fname}, fstname=#{fstname}, fposition=#{fposition} WHERE fcode=#{fcode}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM file WHERE fcode=#{fcode}
+	</delete>
+</mapper>

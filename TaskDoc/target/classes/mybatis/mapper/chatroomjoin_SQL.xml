@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="chatroomjoin_SQL">
+
+	<select id="roomlist" resultType="Integer" parameterType="chatroomjoin">
+		SELECT crcode FROM chatroomjoin WHERE uid=#{uid} AND pcode=#{pcode}
+	</select>
+	
+	<select id="userlist" resultType="String" parameterType="chatroomjoin">
+		SELECT uid FROM chatroomjoin WHERE crcode=#{crcode} AND pcode=#{pcode}
+	</select>
+	
+	<select id="view" resultType="Integer" parameterType="Integer">
+		SELECT pcode FROM chatroomjoin WHERE crcode=#{crcode} 
+	</select>
+	
+	<select id="crcodemin" resultType="Integer" parameterType="Integer">
+		SELECT MIN(crcode) FROM chatroomjoin WHERE pcode=#{pcode}
+	</select>
+	
+	<insert id="insert" parameterType="chatroomjoin">
+		INSERT INTO chatroomjoin VALUES(#{pcode}, #{crcode}, #{uid})
+	</insert>
+	
+	<delete id="delete" parameterType="chatroomjoin">
+		DELETE FROM chatroomjoin WHERE crcode=#{crcode} AND uid=#{uid} AND pcode=#{pcode}
+	</delete>
+	
+	<select id="userlookup" parameterType="chatroomjoin" resultType="String">
+		SELECT uid
+		FROM projectjoin pj
+		WHERE pj.pcode = #{pcode}
+		AND NOT EXISTS ( SELECT cj.uid AS uid FROM chatroomjoin cj WHERE cj.crcode = #{crcode} and cj.uid = pj.uid);
+	</select>
+</mapper>
+	

@@ -1,0 +1,75 @@
+@CHARSET "UTF-8";
+
+/* Pie Chart */
+.progress-pie-chart {
+	width: 100px; /*반절*/
+	height: 100px; /*반절*/
+	border-radius: 50%;
+	background-color: #E5E5E5;
+	position: relative;
+	margin-top: 30px;
+	float: left;
+}
+
+/*차트   */
+.progress-pie-chart.gt-50 {
+	background-color: #81CE97;
+}
+
+.ppc-progress {
+	content: "";
+	position: absolute;
+	border-radius: 50%;
+	left: calc(50% - 50px); /*px반절*/
+	top: calc(50% - 50px); /*px반절*/
+	width: 100px; /*반절*/
+	height: 100px; /*반절*/
+	clip: rect(0, 100px, 100px, 50px); /*px반절*/
+}
+
+.ppc-progress .ppc-progress-fill {
+	content: "";
+	position: absolute;
+	border-radius: 50%;
+	left: calc(50% - 50px); /*반절*/
+	top: calc(50% - 50px); /*반절*/
+	width: 100px; /*반절*/
+	height: 100px; /*반절*/
+	clip: rect(0, 50px, 100px, 0); /*반절*/
+	background: #81CE97;
+	transform: rotate(60deg);
+}
+
+.gt-50 .ppc-progress {
+	clip: rect(0, 50px, 100px, 0);
+}
+
+.gt-50 .ppc-progress .ppc-progress-fill {
+	clip: rect(0, 100px, 100px, 50px);
+	background: #E5E5E5;
+}
+
+.ppc-percents {
+	content: "";
+	position: absolute;
+	border-radius: 50%;
+	left: calc(50% - 70px/ 2); /*반절*/
+	top: calc(50% - 70px/ 2); /*반절*/
+	width: 70px; /*반절*/
+	height: 70px; /*반절*/
+	background: #fff;
+	text-align: center;
+	display: table;
+}
+
+.ppc-percents span {
+	display: block;
+	font-size: 1em; /*글자 크기*/
+	font-weight: bold;
+	color: #81CE97;
+}
+
+.pcc-percents-wrapper {
+	display: table-cell;
+	vertical-align: middle;
+}

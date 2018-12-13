@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="decision_SQL">
+
+	<select id="tasklist" resultType="decision"
+		parameterType="Integer">
+		SELECT * FROM decision WHERE tcode=#{tcode} ORDER BY
+		dsdate ASC
+	</select>
+
+	<select id="roomlist" resultType="decision"
+		parameterType="Integer">
+		SELECT * FROM decision WHERE crcode=#{crcode} ORDER BY
+		dsdate ASC
+	</select>
+
+	<select id="view" resultType="decision" parameterType="Integer">
+		SELECT *
+		FROM decision WHERE dscode=#{dscode}
+	</select>
+
+	<insert id="insert" parameterType="decision"
+		useGeneratedKeys="true" keyProperty="dscode">
+		INSERT INTO decision VALUES(null, #{dstitle}, NOW(), 0, #{crcode},
+		<choose>
+			<when test="tcode != 0">
+				#{tcode}
+			</when>
+			<otherwise>
+				null
+			</otherwise>
+		</choose>
+		)
+	</insert>
+
+	<update id="update" parameterType="decision">
+		UPDATE decision SET tcode=
+		<choose>
+			<when test="tcode != 0">
+				#{tcode}
+			</when>
+			<otherwise>
+				null
+			</otherwise>
+		</choose>
+		, dstitle=#{dstitle}, dsclose=#{dsclose} WHERE dscode=#{dscode}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM decision WHERE dscode=#{dscode}
+	</delete>
+</mapper>
+	

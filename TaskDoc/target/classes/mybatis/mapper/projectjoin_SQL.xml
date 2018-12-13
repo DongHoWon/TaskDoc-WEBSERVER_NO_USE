@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="projectjoin_SQL">
+	<select id="listProject" resultType="projectjoin">
+
+		SELECT * FROM projectjoin WHERE uid=#{uid}
+
+	</select>
+	
+	<select id="listUser" resultType="projectjoin">
+		SELECT * FROM projectjoin WHERE pcode=#{pcode}
+	</select>
+	
+	<insert id="insert" parameterType="projectjoin">
+		INSERT INTO projectjoin VALUES(#{pcode}, #{uid}, #{ppermission}, #{pinvite})
+	</insert>
+	
+	<update id="update" parameterType="projectjoin">
+		UPDATE projectjoin SET ppermission=#{ppermission}, pinvite=#{pinvite} WHERE pcode=#{pcode} AND uid=#{uid}
+	</update>
+	
+	<delete id="delete" parameterType="projectjoin">
+		DELETE FROM projectjoin WHERE pcode=#{pcode} AND uid=#{uid}
+	</delete>
+	
+	<!--프로젝트 초대시 회원이 프로젝트에 존재하는지 체크  -->
+	<select id="projectSelectid" parameterType="projectjoin" resultType="projectjoin">
+		SELECT pcode, uid FROM projectjoin WHERE pcode=#{pcode} AND uid=#{uid}
+	</select>
+</mapper>
+	
+		

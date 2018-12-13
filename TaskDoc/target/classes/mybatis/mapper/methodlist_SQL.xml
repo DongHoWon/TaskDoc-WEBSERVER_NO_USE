@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="methodlist_SQL">
+	<select id="list" resultType="methodlist" parameterType="String">
+		SELECT * FROM methodlist WHERE uid=#{uid} ORDER BY mltitle asc
+	</select>
+
+	<insert id="insert" parameterType="methodlist">
+		INSERT INTO methodlist VALUES(#{uid}, #{mbcode}, #{mltitle})
+	</insert>
+	
+	<update id="update" parameterType="methodlist">
+		UPDATE methodlist SET mltitle=#{mltitle} WHERE mbcode=#{mbcode} AND uid=#{uid}
+	</update>
+	
+	<delete id="delete" parameterType="methodlist">
+		DELETE FROM methodlist WHERE mbcode=#{mbcode} AND uid=#{uid}
+	</delete>
+</mapper>
+	

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="userinfo_SQL">
+
+	<!-- 회원가입 -->
+	<insert id="insert" parameterType="userinfo">
+
+		INSERT INTO userinfo
+		VALUES(#{uid}, #{upasswd}, #{uname}, #{ustate}, #{uphone})
+
+	</insert>
+
+
+	<!-- 유저 정보 받아오기 -->
+	<select id="view" parameterType="String"
+		resultType="userinfo">
+
+		SELECT * FROM userinfo WHERE uid=#{userId}
+
+	</select>
+
+
+	<!-- 회원 정보 업데이트 -->
+	<update id="update" parameterType="userinfo">
+
+		UPDATE userinfo SET
+		upasswd=#{upasswd},
+		uname=#{uname},
+		ustate=#{ustate},
+		uphone=#{uphone} 
+		WHERE uid=#{uid}
+
+	</update>
+	
+	
+	<!-- 회원 삭제 -->
+	<delete id="delete" parameterType="String">
+		DELETE FROM userinfo WHERE uid=#{uid}
+	</delete>
+
+</mapper>
+	
+		

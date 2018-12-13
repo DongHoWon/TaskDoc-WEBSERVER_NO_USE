@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="method_SQL">
+	<select id="list" resultType="method">
+		SELECT mcode, method FROM method ORDER BY method ASC
+	</select>
+
+	<select id="view" resultType="method" parameterType="Integer">
+		SELECT * FROM method WHERE mcode=#{mcode}
+	</select>
+</mapper>
+	

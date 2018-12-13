@@ -1,0 +1,175 @@
+@CHARSET "UTF-8";
+
+/*Gyeongi Chungnen Font*/
+@font-face {
+	font-family: "Batang_Bold";
+	src: local(※), url(../fonts/Gyeongi/Batang_Bold.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Batang_Regular";
+	src: local(※), url(../fonts/Gyeongi/Batang_Regular.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Title_Bold";
+	src: local(※), url(../fonts/Gyeongi/Title_Bold.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Title_Light";
+	src: local(※), url(../fonts/Gyeongi/Title_Light.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Title_Medium";
+	src: local(※), url(../fonts/Gyeongi/Title_Medium.woff) format('woff')
+}
+
+@font-face {
+	font-family: "TitleV";
+	src: local(※), url(../fonts/Gyeongi/TitleV.woff) format('woff')
+}
+
+/* /Gyeongi Chungnen Font*/
+
+/*SCROLL BAR STYLE  */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #ed8151;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+/*SCROLL BAR STYLE  */
+
+/*element font 지정  */
+span, a, button, td, th {
+	font-family: Title_Light;
+}
+/*element font 지정  */
+
+/*main_header  */
+.header_nav {
+	width: 100%;
+	height: 50px;
+	background-color: #333;
+	display: inline-flex;
+}
+
+/*main_header, 이미지중앙정렬 text-align */
+#mainlogowrap {
+	width: 76.8px;
+	height: 50px;
+	text-align: center;
+	background-color: white;
+	line-height: 50px;
+}
+
+/*main_header  */
+#projectnamewrap {
+	width: 100px;
+	background-color: #ed8151;
+	text-align: center;
+}
+
+/*line-height : element 요소의 세로크기만큼 지정해주면 세로로 중앙정렬이됨 ,main_header */
+#projectname {
+	color: white;
+	font-size: 20px;
+	line-height: 50px;
+	text-decoration: none;
+}
+
+/* left_side */
+#sidebar {
+	background-color: white;
+	width: 50px;
+	height: 100%;
+	float: left;
+}
+
+.h-describe, .h-task, .h-user, .h-board, .h-settings, .h-logout {
+	width: 100%;
+	height: 70px;
+	background-color: white;
+	text-align: center;
+	line-height: 70px;
+	cursor: pointer;
+}
+
+#describe, #task, #user, #board, #settings, #logout {
+	width: 25px;
+	height: 25px;
+}
+
+/*project/main  */
+#frame {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+}
+
+#wrapper {
+	width: 100%;
+	height: calc(100% - 100px);
+}
+
+#contentwrap {
+	width: calc(100% - 50px);
+	height: 100%;
+	float: left;
+	overflow: auto;
+}
+
+.projectlists{
+	display: inline-block;
+	height: 100px;
+	margin: 1em;
+	background-color: white;
+	box-shadow: 4px 4px 7px grey;
+	cursor: pointer;
+}
+/*pinvite==1, OWNER  */
+.headername {
+	width: 80%;
+	height: 100%;
+	float: left;
+	background-color: #ed8151;
+}
+
+.headerimg {
+	width: 20%;
+	height: 100%;
+	float: right;
+	background-color: white;
+}
+
+.prosetinviteimg, .prosetsettingimg, .prookimg, .pronoimg, .pronoticebtn {
+	width: 100%;
+	height: 50%;
+	outline: aqua;
+	border: 0;
+	background-color: white;
+}
+
+#footer {
+	width: 100%;
+	height: 50px;
+	background-color: black;
+}

@@ -1,0 +1,98 @@
+@CHARSET "EUC-KR";
+
+body {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: #eee;
+}
+
+.form-signin {
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}
+
+.form-signin .form-signin-heading, .form-signin .checkbox {
+	margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+	font-weight: normal;
+}
+
+.form-signin .form-control {
+	position: relative;
+	height: auto;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+	z-index: 2;
+}
+
+.form-signin input[type="id"] {
+	margin-bottom: -1px;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+/*Gyeongi Chungnen Font*/
+@font-face {
+	font-family: "Batang_Bold";
+	src: local(『), url(../fonts/Gyeongi/Batang_Bold.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Batang_Regular";
+	src: local(『), url(../fonts/Gyeongi/Batang_Regular.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Title_Bold";
+	src: local(『), url(../fonts/Gyeongi/Title_Bold.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Title_Light";
+	src: local(『), url(../fonts/Gyeongi/Title_Light.woff) format('woff')
+}
+
+@font-face {
+	font-family: "Title_Medium";
+	src: local(『), url(../fonts/Gyeongi/Title_Medium.woff) format('woff')
+}
+
+@font-face {
+	font-family: "TitleV";
+	src: local(『), url(../fonts/Gyeongi/TitleV.woff) format('woff')
+}
+
+/* /Gyeongi Chungnen Font*/
+
+/* login form css  */
+#uid, #upasswd, h2, label {
+	font-family: Title_Light;
+	/* login form css  */
+}
+
+/*Progress Bar */
+
+#myBar {
+    width: 10%;
+    height: 30px;
+    background-color: #ffa50094;
+    text-align: center; /* To center it horizontally (if you want) */
+    line-height: 30px; /* To center it vertically */
+    color: white; 
+}
+/*Progress Bar */

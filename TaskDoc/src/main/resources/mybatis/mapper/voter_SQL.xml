@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="voter_SQL">
+
+	<select id="list" resultType="voter">
+		SELECT * FROM voter WHERE dsicode=#{dsicode}
+	</select>
+
+	<insert id="insert" parameterType="voter">
+		INSERT INTO voter VALUES(#{uid},#{dsicode})
+	</insert>
+
+	<delete id="delete" parameterType="voter">
+		DELETE FROM voter WHERE dsicode=#{dsicode} AND uid=#{uid}
+	</delete>
+	
+	<select id="check" resultType="String">
+		SELECT voter.uid
+		FROM voter, decisionitem
+		WHERE decisionitem.dsicode = voter.dsicode and decisionitem.dscode=#{dscode};
+	</select>
+	
+</mapper>
+	

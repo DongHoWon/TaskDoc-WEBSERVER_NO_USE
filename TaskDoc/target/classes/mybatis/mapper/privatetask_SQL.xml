@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="privatetask_SQL">
+
+	<select id="codelist" resultType="privatetask">
+		SELECT * FROM privatetask WHERE tcode=#{tcode} AND uid=#{uid} ORDER BY ptrefference ASC, ptcode ASC;
+	</select>
+	
+	<select id ="view" resultType="privatetask">
+		SELECT ptcode,pttitle,ptcolor,ptsdate,ptedate,ptpercent,ptsequence,ptrefference,tcode,uid FROM privatetask where ptcode=#{ptcode};
+	</select>
+	
+	<select id="idlist" resultType="privatetask">
+		SELECT * FROM privatetask WHERE uid=#{uid}ORDER BY ptrefference ASC, ptcode ASC;
+	</select>
+	
+	<select id="selfRefMax" resultType="Integer">
+	 	SELECT MAX(ptsequence) FROM privatetask WHERE tcode=#{tcode} AND ptcode=ptrefference;
+	</select>
+	
+	<select id="sameRefMax" resultType="Integer">
+	 	SELECT MAX(ptsequence) FROM privatetask WHERE ptrefference=#{ptrefference} AND NOT ptcode=ptrefference;
+	</select>
+	
+	<!-- 하위 공용업무 조회 -->
+	 <select id="downtask" resultType="privatetask">		
+		SELECT * FROM privatetask WHERE ptrefference=#{ptrefference} AND ptcode!=ptrefference;	
+	</select> 
+	
+	<!--uid로 어떤 공용업무로 개인업무생성했는지-->
+	 <select id="plist" resultType="publictask">		
+		SELECT tcode , ttitle, tcolor,tsdate,tedate,tpercent, tsequence, trefference, pcode
+		FROM publictask p
+		WHERE p.tcode IN (
+			SELECT distinct pt.tcode 
+    		FROM privatetask pt
+    		WHERE pt.uid=#{uid}
+    		);	
+	</select> 
+	
+	<!--tcode로 privatetask 조회-->
+	 <select id="ptlist" resultType="privatetask">		
+		SELECT * FROM privatetask where tcode=#{tcode} and uid=#{uid};
+	</select> 
+	
+	<insert id="insert" parameterType="privatetask" useGeneratedKeys="true" keyProperty="ptcode">
+		INSERT INTO privatetask VALUES(null, #{pttitle}, #{ptcolor}, #{ptsdate}, #{ptedate}, 0, 0, 
+		<choose>
+			<when test="ptrefference != 0">
+				#{ptrefference}
+			</when>
+			<otherwise>
+				null
+			</otherwise>
+		</choose>, #{tcode}, #{uid})
+	</insert>
+	
+	<update id="update" parameterType="privatetask">
+		UPDATE privatetask SET pttitle=#{pttitle}, ptcolor=#{ptcolor}, ptsdate=#{ptsdate}, ptedate=#{ptedate}, ptpercent=#{ptpercent}, 
+				ptsequence=#{ptsequence}, ptrefference=#{ptrefference} WHERE ptcode=#{ptcode}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM privatetask WHERE ptcode=#{ptcode}
+	</delete>
+</mapper>
+	

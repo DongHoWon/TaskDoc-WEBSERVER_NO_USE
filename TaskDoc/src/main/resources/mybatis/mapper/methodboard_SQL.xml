@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="methodboard_SQL">
+
+	<select id="list" resultType="methodboard">
+		SELECT mbcode, mbtitle, mbdate, pcode, uid FROM methodboard ORDER BY mbcode DESC
+	</select>
+
+	<select id="mylist" parameterType="String" resultType="methodboard">
+		SELECT mbcode, mbtitle, mbdate, pcode, uid FROM methodboard WHERE uid=#{uid} ORDER BY mbcode DESC
+	</select>
+	
+	<select id="view" parameterType="Integer" resultType="methodboard">
+		SELECT * FROM methodboard WHERE mbcode=#{mbcode}
+	</select>
+
+	<insert id="insert" parameterType="methodboard" useGeneratedKeys="true" keyProperty="mbcode">
+		INSERT INTO methodboard VALUES(null, #{mbtitle}, #{mbcontents}, NOW(), #{pcode}, #{uid})
+	</insert>
+	
+	<update id="update" parameterType="methodboard">
+		UPDATE methodboard SET mbtitle=#{mbtitle}, mbcontents=#{mbcontents}, pcode=#{pcode} WHERE mbcode=#{mbcode}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM methodboard WHERE mbcode=#{mbcode}
+	</delete>
+</mapper>
+	

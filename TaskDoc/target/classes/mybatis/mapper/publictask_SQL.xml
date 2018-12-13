@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="publictask_SQL">
+	
+	<select id="list" resultType="publictask">
+		SELECT * FROM publictask WHERE pcode=#{pcode} ORDER BY trefference ASC, tcode ASC
+	</select>
+	
+	<select id="selfRefMax" resultType="Integer">
+	 	SELECT MAX(tsequence) FROM publictask WHERE pcode=#{pcode} AND tcode=trefference;
+	</select>
+	
+	<select id="sameRefMax" resultType="Integer">	
+	 	SELECT MAX(tsequence) FROM publictask WHERE  trefference=#{trefference} AND NOT tcode=trefference;
+	</select>
+	
+	<!--최상위 공용업무 조회  -->
+	<select id="roottask" resultType="publictask">
+		SELECT * FROM publictask WHERE tcode=trefference AND pcode=#{pcode};
+	</select>
+	
+	<!-- 하위 공용업무 조회 -->
+	 <select id="downtask" resultType="publictask">		
+		<!-- SELECT a.tcode, a.ttitle, a.tcolor, a.tsdate, a.tedate, a.tpercent, a.tsequence, a.trefference, a.pcode,
+			( SELECT count(*) 
+			  FROM publictask b 
+			  WHERE b.trefference = a.tcode) as count
+		FROM publictask a
+		WHERE trefference=#{trefference} AND tcode !=trefference; -->
+		SELECT * FROM publictask WHERE trefference=#{trefference} AND tcode!=trefference;	
+	</select> 
+	
+	<insert id="insert" parameterType="publictask" useGeneratedKeys="true" keyProperty="tcode">
+		INSERT INTO publictask VALUES(null, #{ttitle}, #{tcolor}, #{tsdate}, #{tedate}, 0, 0, 
+		<choose>
+			<when test="trefference != 0">
+				#{trefference}
+			</when>
+			<otherwise>
+				null
+			</otherwise>
+		</choose>, #{pcode})
+	</insert>
+	
+	<select id="view" resultType="publictask">
+		SELECT * FROM publictask WHERE tcode=#{tcode}
+	</select>
+	
+	<update id="update" parameterType="publictask">
+		UPDATE publictask SET ttitle=#{ttitle}, tcolor=#{tcolor}, tsdate=#{tsdate}, tedate=#{tedate}, tpercent=#{tpercent} 
+		, trefference=#{trefference}, tsequence=#{tsequence} WHERE tcode=#{tcode}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM publictask WHERE tcode=#{tcode}
+	</delete>
+</mapper>
+	

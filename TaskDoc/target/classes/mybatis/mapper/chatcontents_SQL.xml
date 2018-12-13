@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="chatcontents_SQL">
+
+	<select id="view" resultType="chatcontents">
+		SELECT * FROM chatcontents WHERE cccode=#{cccode}
+	</select>
+
+	<select id="list" resultType="chatcontents">
+		SELECT * FROM chatcontents WHERE crcode=#{crcode} ORDER BY cccode ASC
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="cccode">
+		INSERT INTO chatcontents VALUES(null, #{crcode}, #{uid}, #{ccontents},
+		NOW(),
+		<choose>
+			<when test="dmcode != 0">
+				#{dmcode},
+			</when>
+			<otherwise>
+				null,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="dscode != 0">
+				#{dscode},
+			</when>
+			<otherwise>
+				null,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="crcoderef != 0">
+				#{crcoderef}
+			</when>
+			<otherwise>
+				null
+			</otherwise>
+		</choose>
+		)
+	</insert>
+
+</mapper>
+	

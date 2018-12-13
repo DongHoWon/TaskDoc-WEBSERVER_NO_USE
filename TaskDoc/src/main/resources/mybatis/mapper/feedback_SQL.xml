@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="feedback_SQL">
+
+	<select id="list" resultType="feedback" parameterType="Integer">
+		SELECT * FROM feedback WHERE dmcode=#{dmcode} ORDER BY fbcode ASC
+	</select>
+
+	<select id="view" resultType="feedback" parameterType="Integer">
+		SELECT * FROM feedback WHERE fbcode=#{fbcode}
+	</select>
+
+	<insert id="insert" parameterType="feedback"
+		useGeneratedKeys="true" keyProperty="fbcode">
+		INSERT INTO feedback VALUES(NULL,
+		#{dmcode}, #{uid}, #{fbcontents}, NOW())
+	</insert>
+
+	<update id="update" parameterType="feedback">
+		UPDATE feedback SET
+		fbcontents=#{fbcontents} WHERE fbcode=#{fbcode}
+	</update>
+
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM feedback WHERE
+		fbcode=#{fbcode}
+	</delete>
+
+</mapper>

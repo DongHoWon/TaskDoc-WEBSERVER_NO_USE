@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper과 중복 되지 않도록 네임스페이스 기재 -->
+<mapper namespace="project_SQL">
+
+	<select id="view" resultType="project">
+		SELECT * FROM project WHERE pcode=#{pcode}
+	</select>
+
+	<insert id="insert" parameterType="project"
+		useGeneratedKeys="true" keyProperty="pcode">
+		INSERT INTO project VALUES(#{pcode}, #{ptitle}, #{psubtitle}, #{psdate}, #{pedate})
+	</insert>
+
+	<update id="update" parameterType="project">
+		UPDATE project SET ptitle=#{ptitle}, psubtitle=#{psubtitle}, psdate=#{psdate},
+		pedate=#{pedate} WHERE pcode=#{pcode}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE FROM project WHERE pcode=#{pcode}
+	</delete>
+
+</mapper>
